@@ -6,4 +6,5 @@ import com.argendev.markcare.models.Customer;
 public interface CustomerService {
     CustomerDTO save(Customer customer);
     CustomerDTO getUserById(Long id);
+    CustomerDTO getUserByUsername(String username);
 }

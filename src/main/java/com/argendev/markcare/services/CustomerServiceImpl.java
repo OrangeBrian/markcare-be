@@ -28,5 +28,10 @@ public class CustomerServiceImpl implements CustomerService {
         return mapper.map(customerRepository.findCustomerById(id), CustomerDTO.class);
     }
 
+    @Override
+    public CustomerDTO getUserByUsername(String username) {
+        return mapper.map(customerRepository.findCustomerByUsername(username), CustomerDTO.class);
+    }
+
 
 }

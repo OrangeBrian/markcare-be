@@ -26,4 +26,9 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.getUserById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/find/{username}")
+    public ResponseEntity<CustomerDTO> getCustomerByUsername(@PathVariable String username) {
+        return new ResponseEntity<>(customerService.getUserByUsername(username), HttpStatus.OK);
+    }
 }
