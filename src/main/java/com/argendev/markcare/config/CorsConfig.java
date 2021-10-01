@@ -12,7 +12,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://markcare-be.herokuapp.com")
+                        .allowedOrigins("https://markcare-fe.vercel.app/")
                         .allowedMethods("*")
                         .allowedHeaders("*");
             }
