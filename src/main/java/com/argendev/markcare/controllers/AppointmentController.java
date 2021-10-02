@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointment")
+@CrossOrigin("*")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
