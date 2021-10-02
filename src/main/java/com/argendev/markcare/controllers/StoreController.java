@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/store")
-@CrossOrigin(origins = "https://markcare-fe.vercel.app")
+@CrossOrigin(origins = "*")
 public class StoreController {
 
     private final StoreService storeService;

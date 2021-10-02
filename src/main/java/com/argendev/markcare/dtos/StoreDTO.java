@@ -12,4 +12,5 @@ public class StoreDTO {
     private Integer idLegal;
     private Integer telephone;
     private String email;
+    private String imageUrl;
 }

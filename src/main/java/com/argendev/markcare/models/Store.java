@@ -23,6 +23,7 @@ public class Store {
     private String email;
     private String password;
     private boolean available;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference
