@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/branch_office")
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://markcare-fe.vercel.app/")
 public class BranchOfficeController {
 
     private final BranchOfficeService branchOfficeService;
