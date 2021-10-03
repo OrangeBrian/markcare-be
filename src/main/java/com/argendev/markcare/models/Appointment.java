@@ -29,6 +29,5 @@ public class Appointment {
 
     @JoinTable(name = "status", joinColumns = @JoinColumn(name = "appointmentId"))
     @Column(name = "state", nullable = false)
-    @Enumerated(EnumType.STRING)
     private State status = State.PENDING;
 }
