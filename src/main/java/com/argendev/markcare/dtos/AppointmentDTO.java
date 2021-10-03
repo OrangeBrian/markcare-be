@@ -15,5 +15,5 @@ public class AppointmentDTO {
     private LocalDateTime dateAppointment;
 
     private BranchOfficeDTO branchOffice;
-    private List<State> status;
+    private State status = State.PENDING;
 }

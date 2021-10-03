@@ -27,9 +27,8 @@ public class Appointment {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateAppointment;
 
-    @ElementCollection(targetClass = State.class)
     @JoinTable(name = "status", joinColumns = @JoinColumn(name = "appointmentId"))
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private List<State> status;
+    private State status = State.PENDING;
 }
