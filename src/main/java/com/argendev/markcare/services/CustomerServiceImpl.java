@@ -7,6 +7,8 @@ import com.argendev.markcare.services.interfaces.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -24,14 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getUserById(Long id) {
-        return mapper.map(customerRepository.findCustomerById(id), CustomerDTO.class);
+    public Optional<Customer> getUserById(Long id) {
+        return customerRepository.findCustomerById(id);
     }
 
     @Override
-    public CustomerDTO getUserByUsername(String username) {
-        return mapper.map(customerRepository.findCustomerByUsername(username), CustomerDTO.class);
+    public Optional<Customer> getUserByUsername(String username) {
+        return customerRepository.findCustomerByUsername(username);
     }
 
+    @Override
+    public Optional<Customer> getUserByEmail(String email) {
+        return customerRepository.findCustomerByEmail(email);
+    }
 
 }

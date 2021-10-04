@@ -1,11 +1,15 @@
 package com.argendev.markcare.controllers;
 
 import com.argendev.markcare.dtos.CustomerDTO;
+import com.argendev.markcare.exceptions.CustomerException;
 import com.argendev.markcare.models.Customer;
 import com.argendev.markcare.services.interfaces.CustomerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -13,23 +17,66 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final ModelMapper mapper;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, ModelMapper mapper) {
         this.customerService = customerService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/save")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+        try {
+            Optional<Customer> customerOptional = customerService.getUserByEmail(customer.getEmail());
+            if(!customerOptional.isPresent()) {
+                return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+            } else {
+                throw new CustomerException("CREATE customer failed: email " + customer.getEmail() + " already exists");
+            }
+        } catch (Exception e) {
+            throw new CustomerException("CREATE customer failed: " + e.getMessage());
+        }
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
-        return new ResponseEntity<>(customerService.getUserById(id), HttpStatus.OK);
+        try {
+            Optional<Customer> customerOptional = customerService.getUserById(id);
+            if(customerOptional.isPresent()){
+                return new ResponseEntity<>(mapper.map(customerOptional.get(), CustomerDTO.class), HttpStatus.OK);
+            } else {
+                throw new CustomerException("Customer with id " + id + " not found");
+            }
+        } catch (Exception e) {
+            throw new CustomerException("GET customer by id " + id + " failed: " + e.getMessage());
+        }
     }
 
-    @GetMapping("/find/{username}")
+    @GetMapping("/find/username/{username}")
     public ResponseEntity<CustomerDTO> getCustomerByUsername(@PathVariable String username) {
-        return new ResponseEntity<>(customerService.getUserByUsername(username), HttpStatus.OK);
+        try {
+            Optional<Customer> customerOptional = customerService.getUserByUsername(username);
+            if(customerOptional.isPresent()){
+                return new ResponseEntity<>(mapper.map(customerOptional.get(), CustomerDTO.class), HttpStatus.OK);
+            } else {
+                throw new CustomerException("Customer with username " + username + " not found");
+            }
+        } catch (Exception e) {
+            throw new CustomerException("GET customer by username " + username + " failed: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/find/email/{email}")
+    public ResponseEntity<CustomerDTO> getCustomerByEmail(@PathVariable String email) {
+        try {
+            Optional<Customer> customerOptional = customerService.getUserByEmail(email);
+            if(customerOptional.isPresent()){
+                return new ResponseEntity<>(mapper.map(customerOptional.get(), CustomerDTO.class), HttpStatus.OK);
+            } else {
+                throw new CustomerException("Customer with email " + email + " not found");
+            }
+        } catch (Exception e) {
+            throw new CustomerException("GET customer by email " + email + " failed: " + e.getMessage());
+        }
     }
 }

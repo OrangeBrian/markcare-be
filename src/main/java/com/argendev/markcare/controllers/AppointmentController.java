@@ -1,6 +1,7 @@
 package com.argendev.markcare.controllers;
 
 import com.argendev.markcare.dtos.AppointmentDTO;
+import com.argendev.markcare.exceptions.AppointmentException;
 import com.argendev.markcare.models.Appointment;
 import com.argendev.markcare.services.interfaces.AppointmentService;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,29 @@ public class AppointmentController {
 
     @PostMapping("/save")
     public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody Appointment appointment) {
-        return new ResponseEntity<>(appointmentService.save(appointment), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(appointmentService.save(appointment), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new AppointmentException("CREATE appointment failed: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Appointment> deleteAppointment(@PathVariable Long id) {
-        appointmentService.deleteById(id);
+        try {
+            appointmentService.deleteById(id);
+        } catch (Exception e) {
+            throw new AppointmentException("DELETE appointment " + id + " failed: " + e.getMessage());
+        }
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/list/{id}")
     public ResponseEntity<List<AppointmentDTO>> listAppointmentsByUserId(@PathVariable Long id) {
-        return new ResponseEntity<>(appointmentService.getAllAppointmentsByCustomerId(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(appointmentService.getAllAppointmentsByCustomerId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new AppointmentException("GET appointment list by user with id " + id + " failed: " + e.getMessage());
+        }
     }
-
 }

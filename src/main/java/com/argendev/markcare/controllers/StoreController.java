@@ -1,6 +1,7 @@
 package com.argendev.markcare.controllers;
 
 import com.argendev.markcare.dtos.StoreDTO;
+import com.argendev.markcare.exceptions.StoreException;
 import com.argendev.markcare.models.Store;
 import com.argendev.markcare.services.interfaces.StoreService;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,19 @@ public class StoreController {
 
     @PostMapping("/save")
     public ResponseEntity<StoreDTO> createStore(@RequestBody Store store) {
-        return new ResponseEntity<>(storeService.save(store), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(storeService.save(store), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new StoreException("CREATE store failed: " + e.getMessage());
+        }
     }
 
     @GetMapping("/shops")
     public ResponseEntity<List<StoreDTO>> getAllStores() {
-        return new ResponseEntity<>(storeService.findAllStores(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(storeService.findAllStores(), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new StoreException("GET all stores failed: " + e.getMessage());
+        }
     }
 }
