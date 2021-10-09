@@ -11,4 +11,6 @@ public class BranchOfficeDTO {
     private String street;
     private String neighborhood;
     private int numberHeight;
+    private String latitude;
+    private String longitude;
 }
