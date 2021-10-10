@@ -38,6 +38,15 @@ public class CustomerController {
         }
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<CustomerDTO> update(@RequestBody Customer customer) {
+        try {
+            return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new CustomerException("UPDATE customer failed: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/id/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
         try {
