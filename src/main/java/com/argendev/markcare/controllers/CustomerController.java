@@ -39,9 +39,20 @@ public class CustomerController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<CustomerDTO> update(@RequestBody Customer customer) {
+    public ResponseEntity<CustomerDTO> update(@RequestBody CustomerDTO customerDTO) {
         try {
-            return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+            Optional<Customer> customerOptional = customerService.getUserById(customerDTO.getId());
+            if(customerOptional.isPresent()) {
+                Customer customer = customerOptional.get();
+                customer.setName(customerDTO.getName());
+                customer.setLastName(customerDTO.getLastName());
+                customer.setCountry(customerDTO.getCountry());
+                customer.setCellphone(customerDTO.getCellphone());
+                customer.setAddress(customerDTO.getAddress());
+                return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+            } else {
+                throw new CustomerException("UPDATE customer failed: email " + customerDTO.getEmail() + " doesn't exists");
+            }
         } catch (Exception e) {
             throw new CustomerException("UPDATE customer failed: " + e.getMessage());
         }
